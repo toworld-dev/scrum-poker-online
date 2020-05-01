@@ -1,4 +1,5 @@
 import { Controller, Get } from '@nestjs/common';
+import { TopicDoesntExists } from './topic.exception';
 
 @Controller('topic')
 export class TopicController {
@@ -6,6 +7,7 @@ export class TopicController {
 
   @Get()
   async find() {
+    throw new TopicDoesntExists('id');
     return 'topic controller works';
   }
 }
