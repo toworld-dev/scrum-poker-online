@@ -1,8 +1,9 @@
 import { BaseEntity } from '../common/base.entity';
-import { Column, ManyToOne, JoinColumn, OneToMany } from 'typeorm';
+import { Column, ManyToOne, JoinColumn, OneToMany, Entity } from 'typeorm';
 import { Room } from '../room/room.entity';
 import { Vote } from '../vote/vote.entity';
 
+@Entity()
 export class Topic extends BaseEntity {
   @Column()
   description: string;
