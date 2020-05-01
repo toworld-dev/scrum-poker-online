@@ -1,12 +1,12 @@
+import { TypeOrmModuleOptions } from '@nestjs/typeorm';
 import * as dotenv from 'dotenv';
 dotenv.config();
-import { TypeOrmModuleOptions } from '@nestjs/typeorm';
 
 // Check typeORM documentation for more information.
 const config: TypeOrmModuleOptions = {
   type: 'postgres',
   host: process.env.TYPEORM_HOST,
-  port: Number(process.env.DATABASE_PORT),
+  port: Number(process.env.TYPEORM_PORT),
   username: process.env.TYPEORM_USERNAME,
   password: process.env.TYPEORM_PASSWORD,
   database: process.env.TYPEORM_DATABASE,
@@ -16,7 +16,7 @@ const config: TypeOrmModuleOptions = {
   migrationsRun: Boolean(process.env.TYPEORM_MIGRATIONS_RUN),
   logging: Boolean(process.env.TYPEORM_LOGGING),
   logger: 'file',
-  migrations: [`${__dirname}/src/migrations/**/*{.ts,.js}`],
+  migrations: [`${__dirname}/migrations/**/*{.ts,.js}`],
   cli: {
     migrationsDir: 'src/migrations',
   },

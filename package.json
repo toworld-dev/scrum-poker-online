@@ -19,10 +19,10 @@
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "jest --config ./test/jest-e2e.json",
-    "migration:create": "ts-node ./node_modules/typeorm/cli.js migration:create -n migration -d src/migrations --config ormconfig.ts",
-    "migration:generate": "ts-node ./node_modules/typeorm/cli.js migration:generate -n migration -d src/migrations --config ormconfig.ts",
-    "migration:run": "ts-node ./node_modules/typeorm/cli.js migration:run --config ormconfig.ts",
-    "migration:revert": "ts-node ./node_modules/typeorm/cli.js migration:revert --config ormconfig.ts"
+    "migration:create": "ts-node ./node_modules/typeorm/cli.js migration:create -n migration -d src/migrations --config src/ormconfig.ts",
+    "migration:generate": "ts-node ./node_modules/typeorm/cli.js migration:generate -n migration -d src/migrations --config src/ormconfig.ts",
+    "migration:run": "ts-node ./node_modules/typeorm/cli.js migration:run --config src/ormconfig.ts",
+    "migration:revert": "ts-node ./node_modules/typeorm/cli.js migration:revert --config src/ormconfig.ts"
   },
   "dependencies": {
     "@nestjs/common": "^7.0.0",
@@ -36,6 +36,7 @@
     "bcrypt": "^4.0.1",
     "class-transformer": "^0.2.3",
     "class-validator": "^0.12.2",
+    "dotenv": "^8.2.0",
     "fastify-swagger": "^2.5.1",
     "passport": "^0.4.1",
     "passport-jwt": "^4.0.0",
@@ -43,7 +44,6 @@
     "reflect-metadata": "^0.1.13",
     "rimraf": "^3.0.2",
     "rxjs": "^6.5.4",
-    "swagger-ui-express": "^4.1.4",
     "typeorm": "^0.2.24"
   },
   "devDependencies": {
