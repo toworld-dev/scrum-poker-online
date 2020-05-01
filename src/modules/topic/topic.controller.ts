@@ -5,8 +5,6 @@ import { ApiTags } from '@nestjs/swagger';
 @ApiTags('topic')
 @Controller('topic')
 export class TopicController {
-  constructor() {}
-
   @Get()
   async getAll() {
     throw new TopicDoesntExists('id');
