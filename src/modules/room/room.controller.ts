@@ -18,6 +18,7 @@ import { RoomUpdateDto } from './dto/roomUpdate.dto';
 import { RoomService } from './room.service';
 import { RoomUpdateResponseDto } from './dto/roomUpdateResponse.dto';
 import { RoomGetAllDto } from './dto/roomGetAll.dto';
+import { RoomGetOneResponseDto } from './dto/roomGetOneResponse.dto';
 
 @Controller('room')
 export class RoomController {
@@ -30,6 +31,15 @@ export class RoomController {
   @ApiResponse({ status: HttpStatus.BAD_REQUEST })
   async getAll(@Query() filter: RoomGetAllDto): Promise<RoomGetAllResponseDto> {
     return await this.roomService.getAll(filter);
+  }
+
+  @Get(':id')
+  @ApiResponse({
+    type: RoomGetAllResponseDto,
+  })
+  @ApiResponse({ status: HttpStatus.BAD_REQUEST })
+  async getOne(@Param('id') id: string): Promise<RoomGetOneResponseDto> {
+    return await this.roomService.getOne(id);
   }
 
   @Post()
