@@ -22,7 +22,8 @@
     "migration:create": "ts-node ./node_modules/typeorm/cli.js migration:create -n migration -d src/migrations --config src/ormconfig.ts",
     "migration:generate": "ts-node ./node_modules/typeorm/cli.js migration:generate -n migration -d src/migrations --config src/ormconfig.ts",
     "migration:run": "ts-node ./node_modules/typeorm/cli.js migration:run --config src/ormconfig.ts",
-    "migration:revert": "ts-node ./node_modules/typeorm/cli.js migration:revert --config src/ormconfig.ts"
+    "migration:revert": "ts-node ./node_modules/typeorm/cli.js migration:revert --config src/ormconfig.ts",
+    "deploy": "now --prod --confirm --token $ZEIT_TOKEN"
   },
   "dependencies": {
     "@nestjs/common": "^7.0.0",
@@ -45,6 +46,8 @@
     "reflect-metadata": "^0.1.13",
     "rimraf": "^3.0.2",
     "rxjs": "^6.5.4",
+    "@types/node": "^13.9.1",
+    "now": "^18.0.0",
     "typeorm": "^0.2.24"
   },
   "devDependencies": {
@@ -52,9 +55,9 @@
     "@nestjs/schematics": "^7.0.0",
     "@nestjs/testing": "^7.0.0",
     "@types/bcrypt": "^3.0.0",
+    "@now/node": "^1.5.1",
     "@types/jest": "25.1.4",
     "@types/jsonwebtoken": "^8.3.9",
-    "@types/node": "^13.9.1",
     "@types/passport-jwt": "^3.0.3",
     "@types/supertest": "^2.0.8",
     "@typescript-eslint/eslint-plugin": "^2.23.0",

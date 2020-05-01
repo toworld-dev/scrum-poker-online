@@ -1,11 +1,66 @@
-import { Controller, Get } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Body,
+  HttpStatus,
+  Put,
+  Param,
+  Delete,
+  Post,
+  Query,
+} from '@nestjs/common';
+import { ApiResponse, ApiBasicAuth } from '@nestjs/swagger';
+
+import { RoomGetAllResponseDto } from './dto/roomGetAllResponse.dto';
+import { RoomCreateResponseDto } from './dto/roomCreateResponse.dto';
+import { RoomCreateDto } from './dto/roomCreate.dto';
+import { RoomUpdateDto } from './dto/roomUpdate.dto';
+import { RoomService } from './room.service';
+import { RoomUpdateResponseDto } from './dto/roomUpdateResponse.dto';
+import { RoomGetAllDto } from './dto/roomGetAll.dto';
 
 @Controller('room')
 export class RoomController {
-  constructor() {}
+  constructor(private readonly roomService: RoomService) {}
 
   @Get()
-  async find() {
-    return 'room controller works';
+  @ApiResponse({
+    type: RoomGetAllResponseDto,
+  })
+  @ApiResponse({ status: HttpStatus.BAD_REQUEST })
+  async getAll(@Query() filter: RoomGetAllDto): Promise<RoomGetAllResponseDto> {
+    return await this.roomService.getAll(filter);
+  }
+
+  @Post()
+  @ApiResponse({
+    type: RoomCreateResponseDto,
+  })
+  @ApiResponse({ status: HttpStatus.CONFLICT })
+  @ApiResponse({ status: HttpStatus.NOT_FOUND })
+  @ApiResponse({ status: HttpStatus.BAD_REQUEST })
+  async create(@Body() data: RoomCreateDto): Promise<RoomCreateResponseDto> {
+    return await this.roomService.create(data);
+  }
+
+  @Put(':id')
+  @ApiResponse({
+    type: RoomUpdateResponseDto,
+  })
+  @ApiResponse({ status: HttpStatus.CONFLICT })
+  @ApiResponse({ status: HttpStatus.NOT_FOUND })
+  @ApiResponse({ status: HttpStatus.BAD_REQUEST })
+  @ApiBasicAuth()
+  async update(@Param('id') id: string, @Body() data: RoomUpdateDto) {
+    return await this.roomService.update(id, data);
+  }
+
+  @Delete(':id')
+  @ApiResponse({ status: HttpStatus.OK })
+  @ApiResponse({ status: HttpStatus.NOT_FOUND })
+  @ApiResponse({ status: HttpStatus.BAD_REQUEST })
+  @ApiBasicAuth()
+  async delete(@Param('id') id: string) {
+    return await this.roomService.delete(id);
   }
 }

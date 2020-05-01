@@ -5,7 +5,7 @@ export class TopicController {
   constructor() {}
 
   @Get()
-  async find() {
+  async getAll() {
     return 'topic controller works';
   }
 }

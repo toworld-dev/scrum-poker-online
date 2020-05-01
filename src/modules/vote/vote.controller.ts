@@ -5,7 +5,7 @@ export class VoteController {
   constructor() {}
 
   @Get()
-  async find() {
+  async getAll() {
     return 'vote controller works';
   }
 }
