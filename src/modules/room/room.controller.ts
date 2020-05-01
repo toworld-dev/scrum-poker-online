@@ -9,7 +9,7 @@ import {
   Post,
   Query,
 } from '@nestjs/common';
-import { ApiResponse, ApiBasicAuth } from '@nestjs/swagger';
+import { ApiResponse, ApiBasicAuth, ApiTags } from '@nestjs/swagger';
 
 import { RoomGetAllResponseDto } from './dto/roomGetAllResponse.dto';
 import { RoomCreateResponseDto } from './dto/roomCreateResponse.dto';
@@ -20,6 +20,7 @@ import { RoomUpdateResponseDto } from './dto/roomUpdateResponse.dto';
 import { RoomGetAllDto } from './dto/roomGetAll.dto';
 import { RoomGetOneResponseDto } from './dto/roomGetOneResponse.dto';
 
+@ApiTags('room')
 @Controller('room')
 export class RoomController {
   constructor(private readonly roomService: RoomService) {}
