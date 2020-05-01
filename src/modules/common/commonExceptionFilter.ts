@@ -1,9 +1,7 @@
 import {
-  ExceptionFilter,
-  Catch,
   ArgumentsHost,
-  Optional,
-  Inject,
+  Catch,
+  ExceptionFilter,
   HttpServer,
 } from '@nestjs/common';
 import { CommonException } from './commonException';
@@ -17,18 +15,12 @@ export class CommonExceptionFilter implements ExceptionFilter {
       const ctx = host.switchToHttp();
       const request = ctx.getRequest();
       const errors = exception.message;
-      let statusCode = 500;
-
-      const errorCode = exception.errorCode.replace(/\D/i, '');
-
-      if (errorCode.startsWith('00')) {
-        statusCode = 409;
-      }
+      const statusCode = exception.errorClass.httpStatusCode;
 
       const responseBody = {
         statusCode: statusCode,
         errors,
-        errorCode: exception.errorCode,
+        errorCode: exception.errorClass.errorCode,
         path: request.url,
       };
 
