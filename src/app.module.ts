@@ -7,7 +7,7 @@ import { AuthModule } from './modules/auth/auth.module';
 import { RoomModule } from './modules/room/room.module';
 import { TopicModule } from './modules/topic/topic.module';
 import { VoteModule } from './modules/vote/vote.module';
-import { MainModule } from './modules/main/item.module';
+import { MainModule } from './modules/main/main.module';
 
 @Module({
   imports: [

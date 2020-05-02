@@ -16,7 +16,7 @@ const config: TypeOrmModuleOptions = {
   migrationsRun: Boolean(process.env.TYPEORM_MIGRATIONS_RUN),
   logging: Boolean(process.env.TYPEORM_LOGGING),
   logger: 'file',
-  migrations: [`${__dirname}/migrations/**/*{.ts,.js}`],
+  migrations: [`${__dirname}/migrations/*{.ts,.js}`],
   cli: {
     migrationsDir: 'src/migrations',
   },
