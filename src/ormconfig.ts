@@ -1,6 +1,4 @@
 import { TypeOrmModuleOptions } from '@nestjs/typeorm';
-import * as dotenv from 'dotenv';
-dotenv.config();
 
 // Check typeORM documentation for more information.
 const config: TypeOrmModuleOptions = {
