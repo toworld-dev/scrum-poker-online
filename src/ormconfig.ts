@@ -25,4 +25,6 @@ const ormconfig: TypeOrmModuleOptions = {
   },
 };
 
+console.log(ormconfig);
+
 export default ormconfig;
