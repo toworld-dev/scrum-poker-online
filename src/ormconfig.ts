@@ -6,7 +6,7 @@ if (process.env.NODE_ENV !== 'production') {
 }
 
 // Check typeORM documentation for more information.
-const config: TypeOrmModuleOptions = {
+const ormconfig: TypeOrmModuleOptions = {
   type: 'postgres',
   host: process.env.TYPEORM_HOST || 'localhost',
   port: Number(process.env.TYPEORM_PORT || 5432),
@@ -25,4 +25,4 @@ const config: TypeOrmModuleOptions = {
   },
 };
 
-export = config;
+export default ormconfig;
