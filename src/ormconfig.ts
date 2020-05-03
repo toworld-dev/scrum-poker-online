@@ -3,6 +3,7 @@ import * as dotenv from 'dotenv';
 
 let ormconfig;
 
+// teste
 if (process.env.NODE_ENV !== 'production') {
   dotenv.config();
 
