@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
-import ormconfig from './ormconfig';
+import * as ormconfig from './ormconfig';
 import { AuthModule } from './modules/auth/auth.module';
 import { RoomModule } from './modules/room/room.module';
 import { TopicModule } from './modules/topic/topic.module';
