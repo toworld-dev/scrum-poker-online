@@ -41,10 +41,11 @@ export class RoomService {
   async create(
     createAddressDTO: RoomCreateDto,
   ): Promise<RoomCreateResponseDto> {
-    const { name } = createAddressDTO;
+    const { name, password } = createAddressDTO;
 
     const entity = this.repository.create({
       name,
+      password,
     });
 
     return await this.repository.save(entity);

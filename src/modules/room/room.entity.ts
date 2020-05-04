@@ -12,7 +12,6 @@ export class Room extends BaseEntity {
   @Column()
   name: string;
 
-  @ApiProperty({ nullable: false })
   @IsNotEmpty()
   @Column()
   password: string;
