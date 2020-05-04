@@ -9,11 +9,17 @@ import { RoomCreateResponseDto } from './dto/roomCreateResponse.dto';
 import { RoomUpdateResponseDto } from './dto/roomUpdateResponse.dto';
 import { RoomGetAllDto } from './dto/roomGetAll.dto';
 
+import { AuthService } from '../auth/auth.service';
+import { RoomEnterResponseDto } from './dto/RoomEnterResponseDto';
+import { RoomEnterDto } from './dto/roomEnter.dto';
+import { types } from '../auth/interface/types.interface';
+
 @Injectable()
 export class RoomService {
   constructor(
     @InjectRepository(Room)
     private readonly repository: Repository<Room>,
+    private readonly authService: AuthService,
   ) {}
 
   async getAll(
@@ -35,13 +41,13 @@ export class RoomService {
   async getOne(id: string): Promise<Room> {
     try {
       return await this.repository.findOneOrFail(id);
-    } catch (err) {}
+    } catch (err) {
+      // throw new NotFoundException(err);
+    }
   }
 
-  async create(
-    createAddressDTO: RoomCreateDto,
-  ): Promise<RoomCreateResponseDto> {
-    const { name, password } = createAddressDTO;
+  async create(createRoomDTO: RoomCreateDto): Promise<RoomCreateResponseDto> {
+    const { name, password } = createRoomDTO;
 
     const entity = this.repository.create({
       name,
@@ -53,7 +59,7 @@ export class RoomService {
 
   async update(
     id: string,
-    addressDTO: RoomUpdateDto,
+    roomDTO: RoomUpdateDto,
   ): Promise<RoomUpdateResponseDto> {
     const entity = await this.repository.findOne({ where: { id } });
 
@@ -62,7 +68,7 @@ export class RoomService {
     }
 
     try {
-      const entityUpdate = this.repository.merge(entity, addressDTO);
+      const entityUpdate = this.repository.merge(entity, roomDTO);
 
       return await this.repository.save(entityUpdate);
     } catch (err) {
@@ -82,5 +88,23 @@ export class RoomService {
     } catch (err) {
       // throw new BadRequestException(err);
     }
+  }
+
+  async enter(
+    id: string,
+    roomEnterDto: RoomEnterDto,
+  ): Promise<RoomEnterResponseDto> {
+    const { password } = roomEnterDto;
+
+    const entity = await this.getOne(id);
+
+    if (entity.password !== password) {
+      // throw new BadRequestException();
+    }
+
+    return {
+      token: await this.authService.login(entity.id),
+      type: types.default,
+    };
   }
 }

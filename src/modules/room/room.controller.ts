@@ -19,6 +19,7 @@ import { RoomService } from './room.service';
 import { RoomUpdateResponseDto } from './dto/roomUpdateResponse.dto';
 import { RoomGetAllDto } from './dto/roomGetAll.dto';
 import { RoomGetOneResponseDto } from './dto/roomGetOneResponse.dto';
+import { RoomEnterDto } from './dto/roomEnter.dto';
 
 @ApiTags('room')
 @Controller('room')
@@ -30,6 +31,7 @@ export class RoomController {
     type: RoomGetAllResponseDto,
   })
   @ApiResponse({ status: HttpStatus.BAD_REQUEST })
+  @ApiBasicAuth()
   async getAll(@Query() filter: RoomGetAllDto): Promise<RoomGetAllResponseDto> {
     return await this.roomService.getAll(filter);
   }
@@ -39,6 +41,7 @@ export class RoomController {
     type: RoomGetAllResponseDto,
   })
   @ApiResponse({ status: HttpStatus.BAD_REQUEST })
+  @ApiBasicAuth()
   async getOne(@Param('id') id: string): Promise<RoomGetOneResponseDto> {
     return await this.roomService.getOne(id);
   }
@@ -73,5 +76,14 @@ export class RoomController {
   @ApiBasicAuth()
   async delete(@Param('id') id: string) {
     return await this.roomService.delete(id);
+  }
+
+  @Post('enter/:id')
+  @ApiResponse({ status: HttpStatus.OK })
+  @ApiResponse({ status: HttpStatus.NOT_FOUND })
+  @ApiResponse({ status: HttpStatus.BAD_REQUEST })
+  @ApiBasicAuth()
+  async enter(@Param('id') id: string, @Body() data: RoomEnterDto) {
+    return await this.roomService.enter(id, data);
   }
 }

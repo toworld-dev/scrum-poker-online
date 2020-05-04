@@ -30,6 +30,7 @@ export class TopicController {
     type: TopicGetAllResponseDto,
   })
   @ApiResponse({ status: HttpStatus.BAD_REQUEST })
+  @ApiBasicAuth()
   async getAll(
     @Query() filter: TopicGetAllDto,
   ): Promise<TopicGetAllResponseDto> {
@@ -41,6 +42,7 @@ export class TopicController {
     type: TopicGetAllResponseDto,
   })
   @ApiResponse({ status: HttpStatus.BAD_REQUEST })
+  @ApiBasicAuth()
   async getOne(@Param('id') id: string): Promise<TopicGetOneResponseDto> {
     return await this.topicService.getOne(id);
   }
@@ -52,6 +54,7 @@ export class TopicController {
   @ApiResponse({ status: HttpStatus.CONFLICT })
   @ApiResponse({ status: HttpStatus.NOT_FOUND })
   @ApiResponse({ status: HttpStatus.BAD_REQUEST })
+  @ApiBasicAuth()
   async create(@Body() data: TopicCreateDto): Promise<TopicCreateResponseDto> {
     return await this.topicService.create(data);
   }

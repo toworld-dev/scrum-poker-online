@@ -30,6 +30,7 @@ export class VoteController {
     type: VoteGetAllResponseDto,
   })
   @ApiResponse({ status: HttpStatus.BAD_REQUEST })
+  @ApiBasicAuth()
   async getAll(@Query() filter: VoteGetAllDto): Promise<VoteGetAllResponseDto> {
     return await this.voteService.getAll(filter);
   }
@@ -39,6 +40,7 @@ export class VoteController {
     type: VoteGetAllResponseDto,
   })
   @ApiResponse({ status: HttpStatus.BAD_REQUEST })
+  @ApiBasicAuth()
   async getOne(@Param('id') id: string): Promise<VoteGetOneResponseDto> {
     return await this.voteService.getOne(id);
   }
@@ -50,6 +52,7 @@ export class VoteController {
   @ApiResponse({ status: HttpStatus.CONFLICT })
   @ApiResponse({ status: HttpStatus.NOT_FOUND })
   @ApiResponse({ status: HttpStatus.BAD_REQUEST })
+  @ApiBasicAuth()
   async create(@Body() data: VoteCreateDto): Promise<VoteCreateResponseDto> {
     return await this.voteService.create(data);
   }
