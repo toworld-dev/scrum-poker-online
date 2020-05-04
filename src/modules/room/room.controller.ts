@@ -20,6 +20,7 @@ import { RoomUpdateResponseDto } from './dto/roomUpdateResponse.dto';
 import { RoomGetAllDto } from './dto/roomGetAll.dto';
 import { RoomGetOneResponseDto } from './dto/roomGetOneResponse.dto';
 import { RoomEnterDto } from './dto/roomEnter.dto';
+import { RoomEnterResponseDto } from './dto/RoomEnterResponseDto';
 
 @ApiTags('room')
 @Controller('room')
@@ -79,7 +80,7 @@ export class RoomController {
   }
 
   @Post('enter/:id')
-  @ApiResponse({ status: HttpStatus.OK })
+  @ApiResponse({ status: HttpStatus.OK, type: RoomEnterResponseDto })
   @ApiResponse({ status: HttpStatus.NOT_FOUND })
   @ApiResponse({ status: HttpStatus.BAD_REQUEST })
   @ApiBasicAuth()
