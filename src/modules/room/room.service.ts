@@ -6,7 +6,7 @@ import { Room } from './room.entity';
 
 import { AuthService } from '../auth/auth.service';
 import { RoomEnterResponseDto } from './dto/response/roomEnterResponseDto';
-import { types } from '../auth/interface/types.interface';
+import { AuthType } from '../auth/interfaces/types.interface';
 import { RoomCreateRequestDto } from './dto/request/roomCreate.dto';
 import { RoomUpdateRequestDto } from './dto/request/roomUpdate.dto';
 import { RoomEnterRequestDto } from './dto/request/roomEnter.dto';
@@ -103,7 +103,7 @@ export class RoomService {
 
     return {
       token: await this.authService.login(entity.id),
-      type: types.default,
+      type: AuthType.DEFAULT,
     };
   }
 }
