@@ -1,7 +1,8 @@
-import { BaseEntity } from '../common/base.entity';
+import { BaseEntity } from '../common/entities/base.entity';
 import { ApiProperty } from '@nestjs/swagger';
 import { Column, OneToMany, Entity } from 'typeorm';
 import { IsNotEmpty } from 'class-validator';
+import { Exclude } from 'class-transformer';
 
 import { Topic } from '../topic/topic.entity';
 
@@ -12,8 +13,10 @@ export class Room extends BaseEntity {
   @Column()
   name: string;
 
+  @ApiProperty({ nullable: false })
   @IsNotEmpty()
   @Column()
+  @Exclude()
   password: string;
 
   @OneToMany(

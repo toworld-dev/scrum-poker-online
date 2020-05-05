@@ -1,4 +1,4 @@
-import { types } from '../interface/types.interface';
+import { types } from '../../interface/types.interface';
 import { ApiProperty } from '@nestjs/swagger';
 
 export class AuthResponseDto {
