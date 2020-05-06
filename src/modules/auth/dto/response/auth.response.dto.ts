@@ -1,4 +1,4 @@
-import { types } from '../interface/types.interface';
+import { AuthType } from '../../interfaces/types.interface';
 import { ApiProperty } from '@nestjs/swagger';
 
 export class AuthResponseDto {
@@ -6,10 +6,10 @@ export class AuthResponseDto {
   token: string;
 
   @ApiProperty({
-    enum: types,
+    enum: AuthType,
     description: 'types of access',
-    default: types.default,
+    default: AuthType.DEFAULT,
     nullable: false,
   })
-  type: types;
+  type: AuthType;
 }

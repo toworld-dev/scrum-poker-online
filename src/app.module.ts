@@ -6,16 +6,16 @@ import { AuthModule } from './modules/auth/auth.module';
 import { RoomModule } from './modules/room/room.module';
 import { TopicModule } from './modules/topic/topic.module';
 import { VoteModule } from './modules/vote/vote.module';
-import { MainModule } from './modules/main/main.module';
+import { AppController } from './app.controller';
 
 @Module({
   imports: [
     TypeOrmModule.forRoot(ormconfig),
-    MainModule,
     AuthModule,
     RoomModule,
     TopicModule,
     VoteModule,
   ],
+  controllers: [AppController],
 })
 export class AppModule {}

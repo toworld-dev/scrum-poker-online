@@ -3,16 +3,15 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, Raw } from 'typeorm';
 
 import { Room } from './room.entity';
-import { RoomCreateDto } from './dto/roomCreate.dto';
-import { RoomUpdateDto } from './dto/roomUpdate.dto';
-import { RoomCreateResponseDto } from './dto/roomCreateResponse.dto';
-import { RoomUpdateResponseDto } from './dto/roomUpdateResponse.dto';
-import { RoomGetAllDto } from './dto/roomGetAll.dto';
 
 import { AuthService } from '../auth/auth.service';
-import { RoomEnterResponseDto } from './dto/RoomEnterResponseDto';
-import { RoomEnterDto } from './dto/roomEnter.dto';
-import { types } from '../auth/interface/types.interface';
+import { RoomEnterResponseDto } from './dto/response/roomEnterResponseDto';
+import { AuthType } from '../auth/interfaces/types.interface';
+import { RoomCreateRequestDto } from './dto/request/roomCreate.dto';
+import { RoomUpdateRequestDto } from './dto/request/roomUpdate.dto';
+import { RoomEnterRequestDto } from './dto/request/roomEnter.dto';
+import { RoomGetAllRequestDto } from './dto/request/roomGetAll.dto';
+import { RoomResponseDto } from './dto/response/room.dto';
 
 @Injectable()
 export class RoomService {
@@ -23,7 +22,7 @@ export class RoomService {
   ) {}
 
   async getAll(
-    filter: RoomGetAllDto,
+    filter: RoomGetAllRequestDto,
   ): Promise<{ data: Room[]; count: number }> {
     const criteria = {
       take: filter.take,
@@ -46,7 +45,7 @@ export class RoomService {
     }
   }
 
-  async create(createRoomDTO: RoomCreateDto): Promise<RoomCreateResponseDto> {
+  async create(createRoomDTO: RoomCreateRequestDto): Promise<RoomResponseDto> {
     const { name, password } = createRoomDTO;
 
     const entity = this.repository.create({
@@ -59,8 +58,8 @@ export class RoomService {
 
   async update(
     id: string,
-    roomDTO: RoomUpdateDto,
-  ): Promise<RoomUpdateResponseDto> {
+    roomDTO: RoomUpdateRequestDto,
+  ): Promise<RoomResponseDto> {
     const entity = await this.repository.findOne({ where: { id } });
 
     if (!entity) {
@@ -92,7 +91,7 @@ export class RoomService {
 
   async enter(
     id: string,
-    roomEnterDto: RoomEnterDto,
+    roomEnterDto: RoomEnterRequestDto,
   ): Promise<RoomEnterResponseDto> {
     const { password } = roomEnterDto;
 
@@ -104,7 +103,7 @@ export class RoomService {
 
     return {
       token: await this.authService.login(entity.id),
-      type: types.default,
+      type: AuthType.DEFAULT,
     };
   }
 }

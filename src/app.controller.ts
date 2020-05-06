@@ -3,7 +3,7 @@ import { ApiTags } from '@nestjs/swagger';
 
 @ApiTags('main')
 @Controller('')
-export class MainController {
+export class AppController {
   @Get()
   index() {
     return 'Scrum poker online 🚀';
