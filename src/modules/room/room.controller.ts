@@ -20,6 +20,8 @@ import { RoomUpdateRequestDto } from './dto/request/roomUpdate.dto';
 import { RoomEnterRequestDto } from './dto/request/roomEnter.dto';
 import { RoomResponseDto } from './dto/response/room.dto';
 import { RoomService } from './room.service';
+import { RoomCreateAndEnter } from './dto/response/roomCreateAndEnter.dto';
+import { AuthType } from '../auth/interfaces/types.interface';
 
 @ApiTags('room')
 @Controller('room')
@@ -45,6 +47,7 @@ export class RoomController extends BaseController {
 
   @Get(':id')
   @ApiResponse({
+    status: HttpStatus.OK,
     type: RoomResponseDto,
   })
   @ApiResponse({ status: HttpStatus.BAD_REQUEST })
@@ -55,13 +58,22 @@ export class RoomController extends BaseController {
 
   @Post()
   @ApiResponse({
-    type: RoomResponseDto,
+    status: HttpStatus.OK,
+    type: RoomCreateAndEnter,
   })
   @ApiResponse({ status: HttpStatus.CONFLICT })
   @ApiResponse({ status: HttpStatus.NOT_FOUND })
   @ApiResponse({ status: HttpStatus.BAD_REQUEST })
-  async create(@Body() data: RoomCreateRequestDto): Promise<RoomResponseDto> {
-    return await this.roomService.create(data);
+  async create(
+    @Body() data: RoomCreateRequestDto,
+  ): Promise<RoomCreateAndEnter> {
+    const room = await this.roomService.create(data);
+    const enter = await this.roomService.enter(room.id, data, AuthType.ADMIN);
+
+    return {
+      ...room,
+      ...enter,
+    };
   }
 
   @Put(':id')
@@ -92,7 +104,6 @@ export class RoomController extends BaseController {
   @ApiResponse({ status: HttpStatus.OK, type: RoomEnterResponseDto })
   @ApiResponse({ status: HttpStatus.NOT_FOUND })
   @ApiResponse({ status: HttpStatus.BAD_REQUEST })
-  @ApiBasicAuth()
   async enter(@Param('id') id: string, @Body() data: RoomEnterRequestDto) {
     return await this.roomService.enter(id, data);
   }
