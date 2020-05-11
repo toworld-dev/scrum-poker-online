@@ -8,17 +8,18 @@ import {
   Delete,
   Post,
   Query,
+  HttpCode,
 } from '@nestjs/common';
 import { ApiResponse, ApiBasicAuth, ApiTags } from '@nestjs/swagger';
 
-import { TopicGetAllResponseDto } from './dto/topicGetAllResponse.dto';
-import { TopicCreateResponseDto } from './dto/topicCreateResponse.dto';
-import { TopicCreateDto } from './dto/topicCreate.dto';
-import { TopicUpdateDto } from './dto/topicUpdate.dto';
+import { GetAllTopicResponseDto } from './dto/response/getAllTopicResponse.dto';
+import { CreateTopicResponseDto } from './dto/response/createTopicResponse.dto';
+import { CreateTopicDto } from './dto/request/createTopic.dto';
+import { TopicUpdateDto } from './dto/request/updateTopic.dto';
 import { TopicService } from './topic.service';
-import { TopicUpdateResponseDto } from './dto/topicUpdateResponse.dto';
-import { TopicGetAllDto } from './dto/topicGetAll.dto';
-import { TopicGetOneResponseDto } from './dto/topicGetOneResponse.dto';
+import { UpdateTopicResponseDto } from './dto/response/updateTopicResponse.dto';
+import { GetAllTopicDto } from './dto/request/getAllTopic.dto';
+import { GetOneTopicResponseDto } from './dto/response/getOneTopicResponse.dto';
 
 @ApiTags('topic')
 @Controller('topic')
@@ -27,55 +28,49 @@ export class TopicController {
 
   @Get()
   @ApiResponse({
-    type: TopicGetAllResponseDto,
+    type: GetAllTopicResponseDto,
   })
-  @ApiResponse({ status: HttpStatus.BAD_REQUEST })
   @ApiBasicAuth()
+  @HttpCode(HttpStatus.OK)
   async getAll(
-    @Query() filter: TopicGetAllDto,
-  ): Promise<TopicGetAllResponseDto> {
+    @Query() filter: GetAllTopicDto,
+  ): Promise<GetAllTopicResponseDto> {
     return await this.topicService.getAll(filter);
   }
 
   @Get(':id')
   @ApiResponse({
-    type: TopicGetAllResponseDto,
+    type: GetOneTopicResponseDto,
   })
-  @ApiResponse({ status: HttpStatus.BAD_REQUEST })
   @ApiBasicAuth()
-  async getOne(@Param('id') id: string): Promise<TopicGetOneResponseDto> {
+  @HttpCode(HttpStatus.OK)
+  async getOne(@Param('id') id: string): Promise<GetOneTopicResponseDto> {
     return await this.topicService.getOne(id);
   }
 
   @Post()
   @ApiResponse({
-    type: TopicCreateResponseDto,
+    type: CreateTopicResponseDto,
   })
-  @ApiResponse({ status: HttpStatus.CONFLICT })
-  @ApiResponse({ status: HttpStatus.NOT_FOUND })
-  @ApiResponse({ status: HttpStatus.BAD_REQUEST })
   @ApiBasicAuth()
-  async create(@Body() data: TopicCreateDto): Promise<TopicCreateResponseDto> {
+  @HttpCode(HttpStatus.CREATED)
+  async create(@Body() data: CreateTopicDto): Promise<CreateTopicResponseDto> {
     return await this.topicService.create(data);
   }
 
   @Put(':id')
   @ApiResponse({
-    type: TopicUpdateResponseDto,
+    type: UpdateTopicResponseDto,
   })
-  @ApiResponse({ status: HttpStatus.CONFLICT })
-  @ApiResponse({ status: HttpStatus.NOT_FOUND })
-  @ApiResponse({ status: HttpStatus.BAD_REQUEST })
   @ApiBasicAuth()
+  @HttpCode(HttpStatus.OK)
   async update(@Param('id') id: string, @Body() data: TopicUpdateDto) {
     return await this.topicService.update(id, data);
   }
 
   @Delete(':id')
-  @ApiResponse({ status: HttpStatus.OK })
-  @ApiResponse({ status: HttpStatus.NOT_FOUND })
-  @ApiResponse({ status: HttpStatus.BAD_REQUEST })
   @ApiBasicAuth()
+  @HttpCode(HttpStatus.OK)
   async delete(@Param('id') id: string) {
     return await this.topicService.delete(id);
   }

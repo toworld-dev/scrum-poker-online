@@ -5,13 +5,13 @@ import { Repository, Raw } from 'typeorm';
 import { Room } from './room.entity';
 
 import { AuthService } from '../auth/auth.service';
-import { RoomEnterResponseDto } from './dto/response/roomEnterResponseDto';
+import { EnterRoomResponseDto } from './dto/response/enterRoomResponseDto';
 import { AuthType } from '../auth/interfaces/types.interface';
-import { RoomCreateRequestDto } from './dto/request/roomCreate.dto';
-import { RoomUpdateRequestDto } from './dto/request/roomUpdate.dto';
-import { RoomEnterRequestDto } from './dto/request/roomEnter.dto';
-import { RoomGetAllRequestDto } from './dto/request/roomGetAll.dto';
-import { RoomResponseDto } from './dto/response/room.dto';
+import { CreateRoomDto } from './dto/request/createRoom.dto';
+import { UpdateRoomDto } from './dto/request/updateRoom.dto';
+import { EnterRoomDto } from './dto/request/enterRoom.dto';
+import { GetAllRoomDto } from './dto/request/getAllRoom.dto';
+import { RoomResponseDto } from './dto/response/roomResponse.dto';
 
 @Injectable()
 export class RoomService {
@@ -22,7 +22,7 @@ export class RoomService {
   ) {}
 
   async getAll(
-    filter: RoomGetAllRequestDto,
+    filter: GetAllRoomDto,
   ): Promise<{ data: Room[]; count: number }> {
     const criteria = {
       take: filter.take,
@@ -45,7 +45,7 @@ export class RoomService {
     }
   }
 
-  async create(createRoomDTO: RoomCreateRequestDto): Promise<RoomResponseDto> {
+  async create(createRoomDTO: CreateRoomDto): Promise<RoomResponseDto> {
     const { name, password } = createRoomDTO;
 
     const entity = this.repository.create({
@@ -56,10 +56,7 @@ export class RoomService {
     return await this.repository.save(entity);
   }
 
-  async update(
-    id: string,
-    roomDTO: RoomUpdateRequestDto,
-  ): Promise<RoomResponseDto> {
+  async update(id: string, roomDTO: UpdateRoomDto): Promise<RoomResponseDto> {
     const entity = await this.repository.findOne({ where: { id } });
 
     if (!entity) {
@@ -91,8 +88,8 @@ export class RoomService {
 
   async enter(
     id: string,
-    roomEnterDto: RoomEnterRequestDto,
-  ): Promise<RoomEnterResponseDto> {
+    roomEnterDto: EnterRoomDto,
+  ): Promise<EnterRoomResponseDto> {
     const { password } = roomEnterDto;
 
     const entity = await this.getOne(id);

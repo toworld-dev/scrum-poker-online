@@ -8,17 +8,18 @@ import {
   Delete,
   Post,
   Query,
+  HttpCode,
 } from '@nestjs/common';
 import { ApiResponse, ApiBasicAuth, ApiTags } from '@nestjs/swagger';
 
-import { VoteGetAllResponseDto } from './dto/voteGetAllResponse.dto';
-import { VoteCreateResponseDto } from './dto/voteCreateResponse.dto';
-import { VoteCreateDto } from './dto/voteCreate.dto';
-import { VoteUpdateDto } from './dto/voteUpdate.dto';
 import { VoteService } from './vote.service';
-import { VoteUpdateResponseDto } from './dto/voteUpdateResponse.dto';
-import { VoteGetAllDto } from './dto/voteGetAll.dto';
-import { VoteGetOneResponseDto } from './dto/voteGetOneResponse.dto';
+import { GetAllVoteResponseDto } from './dto/response/getAllVoteResponse.dto';
+import { GetAllVoteDto } from './dto/request/getAllVote.dto';
+import { GetOneVoteResponseDto } from './dto/response/getOneVoteResponse.dto';
+import { CreateVoteResponseDto } from './dto/response/createVoteResponse.dto';
+import { CreateVoteDto } from './dto/request/createVote.dto';
+import { UpdateVoteResponseDto } from './dto/response/updateVoteResponse.dto';
+import { UpdateVoteDto } from './dto/request/updateVote.dto';
 
 @ApiTags('vote')
 @Controller('vote')
@@ -27,53 +28,47 @@ export class VoteController {
 
   @Get()
   @ApiResponse({
-    type: VoteGetAllResponseDto,
+    type: GetAllVoteResponseDto,
   })
-  @ApiResponse({ status: HttpStatus.BAD_REQUEST })
   @ApiBasicAuth()
-  async getAll(@Query() filter: VoteGetAllDto): Promise<VoteGetAllResponseDto> {
+  @HttpCode(HttpStatus.OK)
+  async getAll(@Query() filter: GetAllVoteDto): Promise<GetAllVoteResponseDto> {
     return await this.voteService.getAll(filter);
   }
 
   @Get(':id')
   @ApiResponse({
-    type: VoteGetAllResponseDto,
+    type: GetOneVoteResponseDto,
   })
-  @ApiResponse({ status: HttpStatus.BAD_REQUEST })
   @ApiBasicAuth()
-  async getOne(@Param('id') id: string): Promise<VoteGetOneResponseDto> {
+  @HttpCode(HttpStatus.OK)
+  async getOne(@Param('id') id: string): Promise<GetOneVoteResponseDto> {
     return await this.voteService.getOne(id);
   }
 
   @Post()
   @ApiResponse({
-    type: VoteCreateResponseDto,
+    type: CreateVoteResponseDto,
   })
-  @ApiResponse({ status: HttpStatus.CONFLICT })
-  @ApiResponse({ status: HttpStatus.NOT_FOUND })
-  @ApiResponse({ status: HttpStatus.BAD_REQUEST })
   @ApiBasicAuth()
-  async create(@Body() data: VoteCreateDto): Promise<VoteCreateResponseDto> {
+  @HttpCode(HttpStatus.CREATED)
+  async create(@Body() data: CreateVoteDto): Promise<CreateVoteResponseDto> {
     return await this.voteService.create(data);
   }
 
   @Put(':id')
   @ApiResponse({
-    type: VoteUpdateResponseDto,
+    type: UpdateVoteResponseDto,
   })
-  @ApiResponse({ status: HttpStatus.CONFLICT })
-  @ApiResponse({ status: HttpStatus.NOT_FOUND })
-  @ApiResponse({ status: HttpStatus.BAD_REQUEST })
   @ApiBasicAuth()
-  async update(@Param('id') id: string, @Body() data: VoteUpdateDto) {
+  @HttpCode(HttpStatus.OK)
+  async update(@Param('id') id: string, @Body() data: UpdateVoteDto) {
     return await this.voteService.update(id, data);
   }
 
   @Delete(':id')
-  @ApiResponse({ status: HttpStatus.OK })
-  @ApiResponse({ status: HttpStatus.NOT_FOUND })
-  @ApiResponse({ status: HttpStatus.BAD_REQUEST })
   @ApiBasicAuth()
+  @HttpCode(HttpStatus.OK)
   async delete(@Param('id') id: string) {
     return await this.voteService.delete(id);
   }

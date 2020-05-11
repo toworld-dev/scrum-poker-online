@@ -3,11 +3,11 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, Raw } from 'typeorm';
 
 import { Vote } from './vote.entity';
-import { VoteCreateDto } from './dto/voteCreate.dto';
-import { VoteUpdateDto } from './dto/voteUpdate.dto';
-import { VoteCreateResponseDto } from './dto/voteCreateResponse.dto';
-import { VoteUpdateResponseDto } from './dto/voteUpdateResponse.dto';
-import { VoteGetAllDto } from './dto/voteGetAll.dto';
+import { CreateVoteDto } from './dto/request/createVote.dto';
+import { UpdateVoteDto } from './dto/request/updateVote.dto';
+import { CreateVoteResponseDto } from './dto/response/createVoteResponse.dto';
+import { UpdateVoteResponseDto } from './dto/response/updateVoteResponse.dto';
+import { GetAllVoteDto } from './dto/request/getAllVote.dto';
 
 @Injectable()
 export class VoteService {
@@ -17,7 +17,7 @@ export class VoteService {
   ) {}
 
   async getAll(
-    filter: VoteGetAllDto,
+    filter: GetAllVoteDto,
   ): Promise<{ data: Vote[]; count: number }> {
     const criteria = {
       take: filter.take,
@@ -38,7 +38,7 @@ export class VoteService {
     } catch (err) {}
   }
 
-  async create(voteCreateDto: VoteCreateDto): Promise<VoteCreateResponseDto> {
+  async create(voteCreateDto: CreateVoteDto): Promise<CreateVoteResponseDto> {
     const { vote, name, topic } = voteCreateDto;
 
     const entity = this.repository.create({
@@ -52,8 +52,8 @@ export class VoteService {
 
   async update(
     id: string,
-    voteDTO: VoteUpdateDto,
-  ): Promise<VoteUpdateResponseDto> {
+    voteDTO: UpdateVoteDto,
+  ): Promise<UpdateVoteResponseDto> {
     const entity = await this.repository.findOne({ where: { id } });
 
     if (!entity) {
