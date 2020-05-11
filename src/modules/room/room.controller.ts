@@ -11,14 +11,14 @@ import {
   HttpCode,
 } from '@nestjs/common';
 import { ApiResponse, ApiBasicAuth, ApiTags } from '@nestjs/swagger';
-import { RoomGetAllRequestDto } from './dto/request/roomGetAll.dto';
-import { RoomEnterResponseDto } from './dto/response/roomEnterResponseDto';
+import { GetAllRoomDto } from './dto/request/getAllRoom.dto';
+import { EnterRoomResponseDto } from './dto/response/enterRoomResponseDto';
 import { BaseController } from '../common/controllers/base.controller';
-import { RoomGetAllResponseDto } from './dto/response/roomGetAll.dto';
-import { RoomCreateRequestDto } from './dto/request/roomCreate.dto';
-import { RoomUpdateRequestDto } from './dto/request/roomUpdate.dto';
-import { RoomEnterRequestDto } from './dto/request/roomEnter.dto';
-import { RoomResponseDto } from './dto/response/room.dto';
+import { GetAllRoomResponseDto } from './dto/response/getAllRoomResponse.dto';
+import { CreateRoomDto } from './dto/request/createRoom.dto';
+import { UpdateRoomDto } from './dto/request/updateRoom.dto';
+import { EnterRoomDto } from './dto/request/enterRoom.dto';
+import { RoomResponseDto } from './dto/response/roomResponse.dto';
 import { RoomService } from './room.service';
 import { RoomCreateAndEnter } from './dto/response/roomCreateAndEnter.dto';
 import { AuthType } from '../auth/interfaces/types.interface';
@@ -34,14 +34,11 @@ export class RoomController extends BaseController {
   @ApiResponse({
     status: HttpStatus.OK,
     description: 'Lista todas as salas',
-    type: RoomGetAllResponseDto,
+    type: GetAllRoomResponseDto,
   })
-  @ApiResponse({ status: HttpStatus.BAD_REQUEST })
   @ApiBasicAuth()
   @HttpCode(HttpStatus.OK)
-  async getAll(
-    @Query() filter: RoomGetAllRequestDto,
-  ): Promise<RoomGetAllResponseDto> {
+  async getAll(@Query() filter: GetAllRoomDto): Promise<GetAllRoomResponseDto> {
     return await this.roomService.getAll(filter);
   }
 
@@ -50,13 +47,14 @@ export class RoomController extends BaseController {
     status: HttpStatus.OK,
     type: RoomResponseDto,
   })
-  @ApiResponse({ status: HttpStatus.BAD_REQUEST })
   @ApiBasicAuth()
+  @HttpCode(HttpStatus.OK)
   async getOne(@Param('id') id: string): Promise<RoomResponseDto> {
     return await this.roomService.getOne(id);
   }
 
   @Post()
+  @HttpCode(HttpStatus.CREATED)
   @ApiResponse({
     status: HttpStatus.OK,
     type: RoomCreateAndEnter,
@@ -64,9 +62,7 @@ export class RoomController extends BaseController {
   @ApiResponse({ status: HttpStatus.CONFLICT })
   @ApiResponse({ status: HttpStatus.NOT_FOUND })
   @ApiResponse({ status: HttpStatus.BAD_REQUEST })
-  async create(
-    @Body() data: RoomCreateRequestDto,
-  ): Promise<RoomCreateAndEnter> {
+  async create(@Body() data: CreateRoomDto): Promise<RoomResponseDto> {
     const room = await this.roomService.create(data);
     const enter = await this.roomService.enter(room.id, data, AuthType.ADMIN);
 
@@ -80,31 +76,28 @@ export class RoomController extends BaseController {
   @ApiResponse({
     type: RoomResponseDto,
   })
-  @ApiResponse({ status: HttpStatus.CONFLICT })
-  @ApiResponse({ status: HttpStatus.NOT_FOUND })
-  @ApiResponse({ status: HttpStatus.BAD_REQUEST })
   @ApiBasicAuth()
+  @HttpCode(HttpStatus.OK)
   async update(
     @Param('id') id: string,
-    @Body() data: RoomUpdateRequestDto,
+    @Body() data: UpdateRoomDto,
   ): Promise<RoomResponseDto> {
     return await this.roomService.update(id, data);
   }
 
   @Delete(':id')
-  @ApiResponse({ status: HttpStatus.OK })
-  @ApiResponse({ status: HttpStatus.NOT_FOUND })
-  @ApiResponse({ status: HttpStatus.BAD_REQUEST })
   @ApiBasicAuth()
+  @HttpCode(HttpStatus.OK)
   async delete(@Param('id') id: string) {
     return await this.roomService.delete(id);
   }
 
   @Post('enter/:id')
-  @ApiResponse({ status: HttpStatus.OK, type: RoomEnterResponseDto })
+  @ApiResponse({ status: HttpStatus.OK, type: EnterRoomResponseDto })
   @ApiResponse({ status: HttpStatus.NOT_FOUND })
   @ApiResponse({ status: HttpStatus.BAD_REQUEST })
-  async enter(@Param('id') id: string, @Body() data: RoomEnterRequestDto) {
+  @HttpCode(HttpStatus.OK)
+  async enter(@Param('id') id: string, @Body() data: EnterRoomDto) {
     return await this.roomService.enter(id, data);
   }
 }

@@ -1,8 +1,8 @@
 import { IntersectionType } from '@nestjs/swagger';
-import { RoomResponseDto } from './room.dto';
-import { RoomEnterResponseDto } from './roomEnterResponseDto';
+import { RoomResponseDto } from './roomResponse.dto';
+import { EnterRoomResponseDto } from './enterRoomResponseDto';
 
 export class RoomCreateAndEnter extends IntersectionType(
   RoomResponseDto,
-  RoomEnterResponseDto,
+  EnterRoomResponseDto,
 ) {}

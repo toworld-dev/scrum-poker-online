@@ -3,11 +3,11 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, Raw } from 'typeorm';
 
 import { Topic } from './topic.entity';
-import { TopicCreateDto } from './dto/topicCreate.dto';
-import { TopicUpdateDto } from './dto/topicUpdate.dto';
-import { TopicCreateResponseDto } from './dto/topicCreateResponse.dto';
-import { TopicUpdateResponseDto } from './dto/topicUpdateResponse.dto';
-import { TopicGetAllDto } from './dto/topicGetAll.dto';
+import { CreateTopicDto } from './dto/request/createTopic.dto';
+import { TopicUpdateDto } from './dto/request/updateTopic.dto';
+import { CreateTopicResponseDto } from './dto/response/createTopicResponse.dto';
+import { UpdateTopicResponseDto } from './dto/response/updateTopicResponse.dto';
+import { GetAllTopicDto } from './dto/request/getAllTopic.dto';
 
 @Injectable()
 export class TopicService {
@@ -17,7 +17,7 @@ export class TopicService {
   ) {}
 
   async getAll(
-    filter: TopicGetAllDto,
+    filter: GetAllTopicDto,
   ): Promise<{ data: Topic[]; count: number }> {
     const criteria = {
       take: filter.take,
@@ -41,8 +41,8 @@ export class TopicService {
   }
 
   async create(
-    createTopicDTO: TopicCreateDto,
-  ): Promise<TopicCreateResponseDto> {
+    createTopicDTO: CreateTopicDto,
+  ): Promise<CreateTopicResponseDto> {
     const { description, room } = createTopicDTO;
 
     const entity = this.repository.create({
@@ -56,7 +56,7 @@ export class TopicService {
   async update(
     id: string,
     topicDTO: TopicUpdateDto,
-  ): Promise<TopicUpdateResponseDto> {
+  ): Promise<UpdateTopicResponseDto> {
     const entity = await this.repository.findOne({ where: { id } });
 
     if (!entity) {
