@@ -89,6 +89,7 @@ export class RoomService {
   async enter(
     id: string,
     roomEnterDto: EnterRoomDto,
+    type: AuthType = AuthType.DEFAULT,
   ): Promise<EnterRoomResponseDto> {
     const { password } = roomEnterDto;
 
@@ -100,7 +101,7 @@ export class RoomService {
 
     return {
       token: await this.authService.login(entity.id),
-      type: AuthType.DEFAULT,
+      type,
     };
   }
 }

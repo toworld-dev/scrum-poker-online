@@ -14,9 +14,9 @@ export class Room extends BaseEntity {
   name: string;
 
   @ApiProperty({ nullable: false })
+  // @Exclude() // Verificar se realmente funciona, pois em testes pelo swagger o valor parece ser excluido
   @IsNotEmpty()
-  @Column()
-  @Exclude()
+  @Column({ nullable: false })
   password: string;
 
   @OneToMany(
