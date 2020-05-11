@@ -12,6 +12,6 @@ export class AuthService {
   async login(roomId: string): Promise<string> {
     const payload: JwtPayload = { roomId };
 
-    return jwt.sign(payload, process.env.JWT_SECRET);
+    return jwt.sign(payload, process.env.JWT_SECRET || 'tests');
   }
 }
