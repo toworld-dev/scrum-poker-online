@@ -15,9 +15,9 @@ export class AuthService {
     return jwt.sign(payload, process.env.JWT_SECRET || 'tests');
   }
 
-  decode(token): null | { [key: string]: any } | string {
+  decode(token: string): JwtPayload {
     return jwt.decode(token, {
       json: true,
-    } as jwt.DecodeOptions);
+    } as jwt.DecodeOptions) as JwtPayload;
   }
 }
