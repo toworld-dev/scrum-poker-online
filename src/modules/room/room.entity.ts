@@ -2,7 +2,6 @@ import { BaseEntity } from '../common/entities/base.entity';
 import { ApiProperty } from '@nestjs/swagger';
 import { Column, OneToMany, Entity } from 'typeorm';
 import { IsNotEmpty } from 'class-validator';
-import { Exclude } from 'class-transformer';
 
 import { Topic } from '../topic/topic.entity';
 
@@ -14,7 +13,6 @@ export class Room extends BaseEntity {
   name: string;
 
   @ApiProperty({ nullable: false })
-  // @Exclude() // Verificar se realmente funciona, pois em testes pelo swagger o valor parece ser excluido
   @IsNotEmpty()
   @Column({ nullable: false })
   password: string;

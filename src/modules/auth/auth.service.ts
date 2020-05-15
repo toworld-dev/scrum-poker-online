@@ -9,15 +9,21 @@ export class AuthService {
     return !!payload.roomId;
   }
 
-  async login(roomId: string): Promise<string> {
-    const payload: JwtPayload = { roomId };
+  async login({
+    roomId,
+    username,
+  }: {
+    roomId: string;
+    username: string;
+  }): Promise<string> {
+    const payload: JwtPayload = { roomId, username };
 
     return jwt.sign(payload, process.env.JWT_SECRET || 'tests');
   }
 
-  decode(token): null | { [key: string]: any } | string {
+  decode(token: string): JwtPayload {
     return jwt.decode(token, {
       json: true,
-    } as jwt.DecodeOptions);
+    } as jwt.DecodeOptions) as JwtPayload;
   }
 }

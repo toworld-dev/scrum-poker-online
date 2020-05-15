@@ -91,7 +91,7 @@ export class RoomService {
     roomEnterDto: EnterRoomDto,
     type: AuthType = AuthType.DEFAULT,
   ): Promise<EnterRoomResponseDto> {
-    const { password } = roomEnterDto;
+    const { password, username } = roomEnterDto;
 
     const entity = await this.getOne(id);
 
@@ -100,8 +100,12 @@ export class RoomService {
     }
 
     return {
-      token: await this.authService.login(entity.id),
+      token: await this.authService.login({
+        roomId: entity.id,
+        username,
+      }),
       type,
+      username,
     };
   }
 }
