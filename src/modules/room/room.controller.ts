@@ -64,7 +64,11 @@ export class RoomController extends BaseController {
   @ApiResponse({ status: HttpStatus.BAD_REQUEST })
   async create(@Body() data: CreateRoomDto): Promise<RoomResponseDto> {
     const room = await this.roomService.create(data);
-    const enter = await this.roomService.enter(room.id, data, AuthType.ADMIN);
+    const enter = await this.roomService.enter(
+      room.id,
+      data as EnterRoomDto,
+      AuthType.ADMIN,
+    );
 
     return {
       ...room,

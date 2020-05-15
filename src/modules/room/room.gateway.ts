@@ -8,12 +8,18 @@ import {
 import { AuthService } from '../auth/auth.service';
 
 import { Socket, Server } from 'socket.io';
+import { JwtPayload } from '../auth/interfaces/token.interface';
 
-interface IOnlineUsers {
-  [roomId: string]: string[];
+interface IOnlineUser {
+  clientId: string;
+  username: string;
 }
 
-@WebSocketGateway()
+interface IOnlineUsers {
+  [roomId: string]: IOnlineUser[];
+}
+
+@WebSocketGateway({ namespace: 'account' })
 export class RoomGateway implements OnGatewayConnection, OnGatewayDisconnect {
   constructor(private readonly authService: AuthService) {}
 
@@ -28,12 +34,11 @@ export class RoomGateway implements OnGatewayConnection, OnGatewayDisconnect {
     }
   }
 
-  getRoom(socket: Socket): string {
+  getTokenData(socket: Socket): JwtPayload {
     const token = this.getToken(socket);
 
     try {
-      const payload = this.authService.decode(token);
-      return payload.roomId;
+      return this.authService.decode(token);
     } catch (e) {
       throw new Error(e);
     }
@@ -41,41 +46,48 @@ export class RoomGateway implements OnGatewayConnection, OnGatewayDisconnect {
 
   handleConnection(socket: Socket) {
     console.log('connected socket', socket.id);
-    const roomId = this.getRoom(socket);
+    const tokenData = this.getTokenData(socket);
 
-    socket.join(roomId);
-    console.log('join', roomId);
+    socket.join(tokenData.roomId);
+    console.log('join', tokenData.roomId);
 
-    if (!!this.online[roomId]) {
-      this.online[roomId].push(socket.id);
+    if (!!this.online[tokenData.roomId]) {
+      this.online[tokenData.roomId].push({
+        clientId: socket.id,
+        username: tokenData.username,
+      });
     } else {
-      this.online[roomId] = [socket.id];
+      this.online[tokenData.roomId] = [
+        {
+          clientId: socket.id,
+          username: tokenData.username,
+        },
+      ];
     }
   }
 
   handleDisconnect(socket: Socket) {
     console.log('disconnect socket', socket.id);
-    const roomId = this.getRoom(socket);
+    const tokenData = this.getTokenData(socket);
 
-    socket.leave(roomId);
-    console.log('leave', roomId);
+    socket.leave(tokenData.roomId);
+    console.log('leave', tokenData.roomId);
 
-    this.online[roomId].splice(this.online[roomId].indexOf(socket.id), 1);
+    this.online[tokenData.roomId] = this.online[tokenData.roomId].filter(
+      user => user.clientId !== socket.id,
+    );
     this.handleMessage(socket);
 
-    if (this.online[roomId].length === 0) {
-      delete this.online[roomId];
+    if (this.online[tokenData.roomId].length === 0) {
+      delete this.online[tokenData.roomId];
     }
   }
 
   @SubscribeMessage('showOnline')
   handleMessage(socket: Socket) {
     console.log('showOnline');
-    const roomId = this.getRoom(socket);
+    const tokenData = this.getTokenData(socket);
 
-    const token = socket.handshake.query.token;
-    const payload = this.authService.decode(token);
-
-    this.wss.to(roomId).emit('online', this.online[payload.roomId]);
+    this.wss.to(tokenData.roomId).emit('online', this.online[tokenData.roomId]);
   }
 }
