@@ -7,6 +7,7 @@ import { RoomModule } from './modules/room/room.module';
 import { TopicModule } from './modules/topic/topic.module';
 import { VoteModule } from './modules/vote/vote.module';
 import { AppController } from './app.controller';
+import { AccountModule } from './modules/account/account.module';
 
 @Module({
   imports: [
@@ -15,6 +16,7 @@ import { AppController } from './app.controller';
     RoomModule,
     TopicModule,
     VoteModule,
+    AccountModule,
   ],
   controllers: [AppController],
 })
