@@ -103,6 +103,7 @@ export class RoomService {
       token: await this.authService.login({
         roomId: entity.id,
         username,
+        type,
       }),
       type,
       username,

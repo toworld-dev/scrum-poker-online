@@ -13,6 +13,7 @@ export class Topic extends BaseEntity {
   @Column()
   description: string;
 
+  @ApiProperty({ nullable: false, description: 'Id da sala' })
   @IsNotEmpty()
   @IsUUID()
   @ManyToOne(
@@ -24,12 +25,12 @@ export class Topic extends BaseEntity {
     },
   )
   @JoinColumn()
-  room: Room;
+  room: string;
 
   @OneToMany(
     () => Vote,
     vote => vote.topic,
   )
   @JoinColumn()
-  votes: Vote[];
+  votes?: Vote[];
 }

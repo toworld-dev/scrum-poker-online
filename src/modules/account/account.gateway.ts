@@ -27,18 +27,9 @@ export class AccountGateway
   @WebSocketServer() wss: Server;
   online: IOnlineUsers = {};
 
-  getToken(socket: Socket): string {
-    try {
-      return socket.handshake.query.token;
-    } catch (e) {
-      throw new Error(e);
-    }
-  }
-
   getTokenData(socket: Socket): JwtPayload {
-    const token = this.getToken(socket);
-
     try {
+      const token = this.authService.getTokenFromSocket(socket);
       return this.authService.decode(token);
     } catch (e) {
       throw new Error(e);
