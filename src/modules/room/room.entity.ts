@@ -20,6 +20,9 @@ export class Room extends BaseEntity {
   @OneToMany(
     () => Topic,
     topic => topic.room,
+    {
+      lazy: true,
+    },
   )
-  topics: Topic[];
+  topics: Promise<Topic[]>;
 }

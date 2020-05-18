@@ -2,6 +2,8 @@ import { Injectable } from '@nestjs/common';
 import * as jwt from 'jsonwebtoken';
 
 import { JwtPayload } from './interfaces/token.interface';
+import { Socket } from 'socket.io';
+import { AuthType } from './interfaces/types.interface';
 
 @Injectable()
 export class AuthService {
@@ -12,11 +14,13 @@ export class AuthService {
   async login({
     roomId,
     username,
+    type,
   }: {
     roomId: string;
     username: string;
+    type: AuthType;
   }): Promise<string> {
-    const payload: JwtPayload = { roomId, username };
+    const payload: JwtPayload = { roomId, username, type };
 
     return jwt.sign(payload, process.env.JWT_SECRET || 'tests');
   }
@@ -25,5 +29,13 @@ export class AuthService {
     return jwt.decode(token, {
       json: true,
     } as jwt.DecodeOptions) as JwtPayload;
+  }
+
+  getTokenFromSocket(socket: Socket): string {
+    try {
+      return socket.handshake.query.token;
+    } catch (e) {
+      throw new Error(e);
+    }
   }
 }
