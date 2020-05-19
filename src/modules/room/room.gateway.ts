@@ -62,9 +62,7 @@ export class RoomGateway implements OnGatewayConnection, OnGatewayDisconnect {
 
     this.wss.to(tokenData.roomId).emit('room', {
       ...room,
-      topic: {
-        description: topics.length ? topics[topics.length - 1].description : '',
-      },
+      topic: topics.length ? topics[topics.length - 1] : { description: '' },
     });
   }
 

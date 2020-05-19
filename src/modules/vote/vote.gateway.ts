@@ -11,10 +11,14 @@ import { AuthService } from '../auth/auth.service';
 
 import { Socket, Server } from 'socket.io';
 import { JwtPayload } from '../auth/interfaces/token.interface';
+import { VoteService } from './vote.service';
 
 @WebSocketGateway({ namespace: 'vote' })
 export class VoteGateway implements OnGatewayConnection, OnGatewayDisconnect {
-  constructor(private readonly authService: AuthService) {}
+  constructor(
+    private readonly authService: AuthService,
+    private readonly voteService: VoteService,
+  ) {}
 
   @WebSocketServer() wss: Server;
 
@@ -48,17 +52,26 @@ export class VoteGateway implements OnGatewayConnection, OnGatewayDisconnect {
     console.log('showVotes');
     const tokenData = this.getTokenData(socket);
 
-    // const room = await this.roomService.getOne(tokenData.roomId);
-    // delete room.password;
+    const rando1 = Math.floor(Math.random() * 6) + 1;
 
-    // const topics = await room.topics;
-
-    // this.wss.to(tokenData.roomId).emit('room', {
-    //   ...room,
-    //   topic: {
-    //     description: topics.length ? topics[topics.length - 1].description : '',
-    //   },
-    // });
+    this.wss.to(tokenData.roomId).emit('votes', {
+      [rando1]: [
+        {
+          clientId: '123',
+          username: 'henrique',
+        },
+        {
+          clientId: '321',
+          username: 'Marcos',
+        },
+      ],
+      5: [
+        {
+          clientId: '456',
+          username: 'Jhonatan',
+        },
+      ],
+    });
   }
 
   @SubscribeMessage('createVote')
@@ -67,12 +80,14 @@ export class VoteGateway implements OnGatewayConnection, OnGatewayDisconnect {
     @MessageBody() data: any,
   ) {
     const tokenData = this.getTokenData(socket);
-    console.log('createVote', data);
-    // await this.topicService.create({
-    //   description: topicName,
-    //   room: tokenData.roomId,
-    // });
 
-    // this.showTopic(socket);
+    await this.voteService.vote({
+      vote: data.vote,
+      name: data.username,
+      topic: data.topic,
+      clientId: data.clientId,
+    });
+
+    this.showVotes(socket);
   }
 }

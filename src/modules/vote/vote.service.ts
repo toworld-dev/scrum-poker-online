@@ -39,12 +39,13 @@ export class VoteService {
   }
 
   async create(voteCreateDto: CreateVoteDto): Promise<CreateVoteResponseDto> {
-    const { vote, name, topic } = voteCreateDto;
+    const { vote, name, topic, clientId } = voteCreateDto;
 
     const entity = this.repository.create({
       vote,
       name,
       topic,
+      clientId,
     });
 
     return await this.repository.save(entity);
@@ -81,5 +82,16 @@ export class VoteService {
     } catch (err) {
       // throw new BadRequestException(err);
     }
+  }
+
+  async vote(voteDTO: CreateVoteDto): Promise<Vote> {
+    const { topic, clientId } = voteDTO;
+    const vote = await this.repository.findOne({ where: { topic, clientId } });
+
+    if (vote) {
+      return this.update(vote.id, voteDTO);
+    }
+
+    return this.create(voteDTO);
   }
 }

@@ -17,6 +17,17 @@ export class Vote extends BaseEntity {
   @Column()
   name: string;
 
+  @ApiProperty({
+    nullable: false,
+    description:
+      'Id de identificação do usuário. Este valor deve ser gerenciado pelo client',
+  })
+  @IsNotEmpty()
+  @Column()
+  clientId: string;
+
+  @ApiProperty({ nullable: false, description: 'Id do tópico' })
+  @IsNotEmpty()
   @ManyToOne(
     () => Topic,
     topic => topic.votes,
@@ -26,5 +37,5 @@ export class Vote extends BaseEntity {
     },
   )
   @JoinColumn()
-  topic: Topic;
+  topic: string;
 }
