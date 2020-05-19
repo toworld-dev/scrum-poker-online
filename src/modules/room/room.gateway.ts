@@ -14,7 +14,6 @@ import { JwtPayload } from '../auth/interfaces/token.interface';
 import { AuthType } from '../auth/interfaces/types.interface';
 import { TopicService } from '../topic/topic.service';
 import { RoomService } from './room.service';
-import { Room } from './room.entity';
 
 @WebSocketGateway({ namespace: 'room' })
 export class RoomGateway implements OnGatewayConnection, OnGatewayDisconnect {
