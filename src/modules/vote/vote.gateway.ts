@@ -54,8 +54,11 @@ export class VoteGateway implements OnGatewayConnection, OnGatewayDisconnect {
     console.log('showVotes');
     const tokenData = this.getTokenData(socket);
     const votes = await this.topicService.votes(tokenData.roomId);
+    const mostVoted = await this.topicService.mostVotedOfTopic(
+      tokenData.roomId,
+    );
 
-    this.wss.to(tokenData.roomId).emit('votes', votes);
+    this.wss.to(tokenData.roomId).emit('votes', { votes, mostVoted });
   }
 
   @SubscribeMessage('createVote')

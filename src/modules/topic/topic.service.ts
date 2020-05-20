@@ -110,4 +110,18 @@ export class TopicService {
 
     return votes;
   }
+
+  async mostVotedOfTopic(roomId: string) {
+    const result = await this.repository
+      .createQueryBuilder('topic')
+      .innerJoin('topic.votes', 'votes')
+      .select('votes.vote')
+      .addSelect('COUNT(*) as soma')
+      .where('topic.room = :roomId', { roomId })
+      .groupBy('vote')
+      .orderBy('soma')
+      .getRawOne();
+    console.log(result);
+    // return result;
+  }
 }
