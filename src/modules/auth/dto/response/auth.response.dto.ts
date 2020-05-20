@@ -2,6 +2,9 @@ import { AuthType } from '../../interfaces/types.interface';
 import { ApiProperty } from '@nestjs/swagger';
 
 export class AuthResponseDto {
+  @ApiProperty({ description: 'Identificador do usuário', nullable: false })
+  clientId: string;
+
   @ApiProperty({ description: 'token of access', nullable: false })
   token: string;
 

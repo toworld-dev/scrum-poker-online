@@ -15,12 +15,14 @@ export class AuthService {
     roomId,
     username,
     type,
+    clientId,
   }: {
     roomId: string;
     username: string;
     type: AuthType;
+    clientId: string;
   }): Promise<string> {
-    const payload: JwtPayload = { roomId, username, type };
+    const payload: JwtPayload = { roomId, username, type, clientId };
 
     return jwt.sign(payload, process.env.JWT_SECRET || 'tests');
   }

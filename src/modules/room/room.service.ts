@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, Raw } from 'typeorm';
+import { v4 as uuidv4 } from 'uuid';
 
 import { Room } from './room.entity';
 
@@ -94,6 +95,7 @@ export class RoomService {
     const { password, username } = roomEnterDto;
 
     const entity = await this.getOne(id);
+    const clientId = uuidv4();
 
     if (entity.password !== password) {
       // throw new BadRequestException();
@@ -104,9 +106,11 @@ export class RoomService {
         roomId: entity.id,
         username,
         type,
+        clientId,
       }),
       type,
       username,
+      clientId,
     };
   }
 }

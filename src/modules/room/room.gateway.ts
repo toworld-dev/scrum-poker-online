@@ -81,6 +81,7 @@ export class RoomGateway implements OnGatewayConnection, OnGatewayDisconnect {
       });
 
       this.showTopic(socket);
+      this.wss.to(tokenData.roomId).emit('newTopic');
     } else {
       throw new Error('Sem permissao para criar topico');
     }

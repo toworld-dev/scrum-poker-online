@@ -45,13 +45,13 @@ export class AccountGateway
 
     if (!!this.online[tokenData.roomId]) {
       this.online[tokenData.roomId].push({
-        clientId: socket.id,
+        clientId: tokenData.clientId,
         username: tokenData.username,
       });
     } else {
       this.online[tokenData.roomId] = [
         {
-          clientId: socket.id,
+          clientId: tokenData.clientId,
           username: tokenData.username,
         },
       ];
@@ -59,14 +59,14 @@ export class AccountGateway
   }
 
   handleDisconnect(socket: Socket) {
-    console.log('disconnect socket', socket.id);
     const tokenData = this.getTokenData(socket);
+    console.log('disconnect socket', tokenData.clientId);
 
     socket.leave(tokenData.roomId);
     console.log('leave', tokenData.roomId);
 
     this.online[tokenData.roomId] = this.online[tokenData.roomId].filter(
-      user => user.clientId !== socket.id,
+      user => user.clientId !== tokenData.clientId,
     );
     this.handleMessage(socket);
 

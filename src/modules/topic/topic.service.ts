@@ -97,7 +97,7 @@ export class TopicService {
 
     const votes = {};
 
-    if (result.votes) {
+    if (result && result?.votes) {
       result.votes.forEach(function(vote: Vote) {
         !votes[vote.vote] && (votes[vote.vote] = []);
 

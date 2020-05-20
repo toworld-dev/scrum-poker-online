@@ -25,16 +25,16 @@ export class VoteGateway implements OnGatewayConnection, OnGatewayDisconnect {
   @WebSocketServer() wss: Server;
 
   handleConnection(socket: Socket) {
-    console.log('connected socket', socket.id);
     const tokenData = this.getTokenData(socket);
+    console.log('connected socket', tokenData.clientId);
 
     socket.join(tokenData.roomId);
     console.log('join', tokenData.roomId);
   }
 
   handleDisconnect(socket: Socket) {
-    console.log('disconnect socket', socket.id);
     const tokenData = this.getTokenData(socket);
+    console.log('disconnect socket', tokenData.clientId);
 
     socket.leave(tokenData.roomId);
     console.log('leave', tokenData.roomId);
