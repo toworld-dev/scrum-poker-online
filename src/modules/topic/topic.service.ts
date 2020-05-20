@@ -8,6 +8,7 @@ import { TopicUpdateDto } from './dto/request/updateTopic.dto';
 import { CreateTopicResponseDto } from './dto/response/createTopicResponse.dto';
 import { UpdateTopicResponseDto } from './dto/response/updateTopicResponse.dto';
 import { GetAllTopicDto } from './dto/request/getAllTopic.dto';
+import { Vote } from '../vote/vote.entity';
 
 @Injectable()
 export class TopicService {
@@ -84,5 +85,29 @@ export class TopicService {
     } catch (err) {
       // throw new BadRequestException(err);
     }
+  }
+
+  async votes(roomId: string) {
+    const result = await this.repository
+      .createQueryBuilder('topic')
+      .innerJoinAndSelect('topic.votes', 'votes')
+      .where('topic.room = :roomId', { roomId })
+      .orderBy('topic.createdAt', 'DESC')
+      .getOne();
+
+    const votes = {};
+
+    if (result.votes) {
+      result.votes.forEach(function(vote: Vote) {
+        !votes[vote.vote] && (votes[vote.vote] = []);
+
+        votes[vote.vote].push({
+          username: vote.name,
+          clientId: vote.clientId,
+        });
+      });
+    }
+
+    return votes;
   }
 }

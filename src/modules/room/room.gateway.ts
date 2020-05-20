@@ -71,6 +71,7 @@ export class RoomGateway implements OnGatewayConnection, OnGatewayDisconnect {
     @ConnectedSocket() socket: Socket,
     @MessageBody() topicName: string,
   ) {
+    console.log('createTopic');
     const tokenData = this.getTokenData(socket);
 
     if (tokenData.type === AuthType.ADMIN) {

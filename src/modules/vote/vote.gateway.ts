@@ -12,12 +12,14 @@ import { AuthService } from '../auth/auth.service';
 import { Socket, Server } from 'socket.io';
 import { JwtPayload } from '../auth/interfaces/token.interface';
 import { VoteService } from './vote.service';
+import { TopicService } from '../topic/topic.service';
 
 @WebSocketGateway({ namespace: 'vote' })
 export class VoteGateway implements OnGatewayConnection, OnGatewayDisconnect {
   constructor(
     private readonly authService: AuthService,
     private readonly voteService: VoteService,
+    private readonly topicService: TopicService,
   ) {}
 
   @WebSocketServer() wss: Server;
@@ -51,27 +53,9 @@ export class VoteGateway implements OnGatewayConnection, OnGatewayDisconnect {
   async showVotes(socket: Socket) {
     console.log('showVotes');
     const tokenData = this.getTokenData(socket);
+    const votes = await this.topicService.votes(tokenData.roomId);
 
-    const rando1 = Math.floor(Math.random() * 6) + 1;
-
-    this.wss.to(tokenData.roomId).emit('votes', {
-      [rando1]: [
-        {
-          clientId: '123',
-          username: 'henrique',
-        },
-        {
-          clientId: '321',
-          username: 'Marcos',
-        },
-      ],
-      5: [
-        {
-          clientId: '456',
-          username: 'Jhonatan',
-        },
-      ],
-    });
+    this.wss.to(tokenData.roomId).emit('votes', votes);
   }
 
   @SubscribeMessage('createVote')
@@ -79,7 +63,7 @@ export class VoteGateway implements OnGatewayConnection, OnGatewayDisconnect {
     @ConnectedSocket() socket: Socket,
     @MessageBody() data: any,
   ) {
-    const tokenData = this.getTokenData(socket);
+    // const tokenData = this.getTokenData(socket);
 
     await this.voteService.vote({
       vote: data.vote,
