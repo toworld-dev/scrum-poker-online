@@ -40,12 +40,11 @@ jobs:
       - name: Beanstalk Deploy for app
         uses: einaregilsson/beanstalk-deploy@v10
         with:
-          aws_access_key: ${{secrets.AWS_ACCESS_KEY}}
-          aws_secret_key: ${{secrets.AWS_SECRET_KEY}}
+          aws_access_key: ${{ secrets.AWS_ACCESS_KEY }}
+          aws_secret_key: ${{ secrets.AWS_SECRET_KEY }}
           application_name: scrum-poker-backend
           environment_name: ScrumPokerBackend-env
           region: us-west-2
-          version_label: 12345
           deployment_package: deploy.zip
 
       - name: Deployed!
