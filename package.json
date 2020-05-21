@@ -38,6 +38,7 @@
     "@nestjs/typeorm": "^7.0.0",
     "@nestjs/websockets": "^7.0.9",
     "@types/node": "^13.9.1",
+    "@types/socket.io": "^2.1.4",
     "@types/uuid": "^8.0.0",
     "bufferutil": "^4.0.1",
     "canvas": "^2.6.1",
@@ -55,7 +56,6 @@
     "rxjs": "^6.5.4",
     "typeorm": "^0.2.24",
     "utf-8-validate": "^5.0.2",
-    "@types/socket.io": "^2.1.4",
     "uuid": "^8.0.0"
   },
   "devDependencies": {
@@ -93,5 +93,8 @@
     },
     "coverageDirectory": "../coverage",
     "testEnvironment": "node"
+  },
+  "engines": {
+    "node": "10.x"
   }
 }
