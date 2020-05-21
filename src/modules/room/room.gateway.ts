@@ -56,13 +56,12 @@ export class RoomGateway implements OnGatewayConnection, OnGatewayDisconnect {
     const tokenData = this.getTokenData(socket);
 
     const room = await this.roomService.getOne(tokenData.roomId);
+    const topic = await this.topicService.latestTopic(tokenData.roomId);
     delete room.password;
-
-    const topics = await room.topics;
 
     this.wss.to(tokenData.roomId).emit('room', {
       ...room,
-      topic: topics.length ? topics[topics.length - 1] : { description: '' },
+      topic: !!topic ? topic : { description: '' },
     });
   }
 

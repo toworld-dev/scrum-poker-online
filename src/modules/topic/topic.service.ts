@@ -90,7 +90,7 @@ export class TopicService {
   async votes(roomId: string) {
     const result = await this.repository
       .createQueryBuilder('topic')
-      .innerJoinAndSelect('topic.votes', 'votes')
+      .leftJoinAndSelect('topic.votes', 'votes')
       .where('topic.room = :roomId', { roomId })
       .orderBy('topic.createdAt', 'DESC')
       .getOne();
@@ -111,17 +111,26 @@ export class TopicService {
     return votes;
   }
 
-  async mostVotedOfTopic(roomId: string) {
+  async latestTopic(roomId: string): Promise<Topic> {
+    return await this.repository.findOne({
+      order: { createdAt: 'DESC' },
+      where: {
+        room: roomId,
+      },
+    });
+  }
+
+  async mostVotedOfTopic(topicId: string) {
     const result = await this.repository
       .createQueryBuilder('topic')
       .innerJoin('topic.votes', 'votes')
-      .select('votes.vote')
-      .addSelect('COUNT(*) as soma')
-      .where('topic.room = :roomId', { roomId })
+      .select('COUNT(*) as total')
+      .addSelect('votes.vote as vote')
+      .where('topic.id = :topicId', { topicId })
       .groupBy('vote')
-      .orderBy('soma')
-      .getRawOne();
-    console.log(result);
-    // return result;
+      .orderBy('total', 'DESC')
+      .getRawMany();
+
+    return result;
   }
 }

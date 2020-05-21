@@ -54,11 +54,8 @@ export class VoteGateway implements OnGatewayConnection, OnGatewayDisconnect {
     console.log('showVotes');
     const tokenData = this.getTokenData(socket);
     const votes = await this.topicService.votes(tokenData.roomId);
-    const mostVoted = await this.topicService.mostVotedOfTopic(
-      tokenData.roomId,
-    );
 
-    this.wss.to(tokenData.roomId).emit('votes', { votes, mostVoted });
+    this.wss.to(tokenData.roomId).emit('votes', votes);
   }
 
   @SubscribeMessage('createVote')
@@ -76,5 +73,25 @@ export class VoteGateway implements OnGatewayConnection, OnGatewayDisconnect {
     });
 
     this.showVotes(socket);
+  }
+
+  @SubscribeMessage('showResult')
+  async showResult(socket: Socket) {
+    console.log('showResult');
+    const tokenData = this.getTokenData(socket);
+    const topic = await this.topicService.latestTopic(tokenData.roomId);
+    const mostVoted = await this.topicService.mostVotedOfTopic(topic.id);
+
+    const result = [];
+    let max = 0;
+
+    mostVoted.forEach((cur: any) => {
+      if (cur.total >= max) {
+        max = cur.total;
+        result.push(cur.vote);
+      }
+    });
+
+    this.wss.to(tokenData.roomId).emit('result', result);
   }
 }
