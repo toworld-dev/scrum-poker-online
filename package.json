@@ -56,6 +56,7 @@
     "rxjs": "^6.5.4",
     "typeorm": "^0.2.24",
     "utf-8-validate": "^5.0.2",
+    "@types/socket.io": "^2.1.4",
     "uuid": "^8.0.0"
   },
   "devDependencies": {
@@ -65,7 +66,6 @@
     "@types/jest": "25.1.4",
     "@types/jsonwebtoken": "^8.3.9",
     "@types/passport-jwt": "^3.0.3",
-    "@types/socket.io": "^2.1.4",
     "@types/supertest": "^2.0.8",
     "@typescript-eslint/eslint-plugin": "^2.23.0",
     "@typescript-eslint/parser": "^2.23.0",
