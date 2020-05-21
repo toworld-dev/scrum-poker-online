@@ -22,8 +22,7 @@
     "migration:create": "ts-node ./node_modules/typeorm/cli.js migration:create -n migration -d src/migrations --config src/ormconfig.ts",
     "migration:generate": "ts-node ./node_modules/typeorm/cli.js migration:generate -n migration -d src/migrations --config src/ormconfig.ts",
     "migration:run": "ts-node ./node_modules/typeorm/cli.js migration:run --config src/ormconfig.ts",
-    "migration:revert": "ts-node ./node_modules/typeorm/cli.js migration:revert --config src/ormconfig.ts",
-    "deploy": "now --prod --confirm --token $ZEIT_TOKEN"
+    "migration:revert": "ts-node ./node_modules/typeorm/cli.js migration:revert --config src/ormconfig.ts"
   },
   "dependencies": {
     "@nestjs/cli": "^7.0.0",
@@ -48,7 +47,6 @@
     "dotenv": "^8.2.0",
     "fastify-swagger": "^2.5.1",
     "jsonwebtoken": "^8.5.1",
-    "now": "^18.0.0",
     "passport": "^0.4.1",
     "passport-jwt": "^4.0.0",
     "pg": "^8.0.3",
@@ -62,7 +60,6 @@
   "devDependencies": {
     "@nestjs/schematics": "^7.0.0",
     "@nestjs/testing": "^7.0.0",
-    "@now/node": "^1.5.1",
     "@types/jest": "25.1.4",
     "@types/jsonwebtoken": "^8.3.9",
     "@types/passport-jwt": "^3.0.3",
