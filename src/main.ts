@@ -33,6 +33,6 @@ async function bootstrap() {
   SwaggerModule.setup('api', app, document);
 
   await app.listen(port);
-  logger.log(`Application listening on port ${port}`);
+  logger.log(`Application listening on port: ${port}`);
 }
 bootstrap();
