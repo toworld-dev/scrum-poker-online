@@ -32,7 +32,7 @@ async function bootstrap() {
   const port = +process.env.PORT || 3000;
   SwaggerModule.setup('api', app, document);
 
-  await app.listen(port);
+  await app.listen(port, '0.0.0.0');
   logger.log(`Application listening on port: ${port}`);
 }
 bootstrap();
