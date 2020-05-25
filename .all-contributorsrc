@@ -1,0 +1,24 @@
+{
+  "files": [
+    "README.md"
+  ],
+  "imageSize": 100,
+  "commit": false,
+  "contributors": [
+    {
+      "login": "marcos-antonio",
+      "name": "Júnior",
+      "avatar_url": "https://avatars0.githubusercontent.com/u/20249442?v=4",
+      "profile": "https://github.com/marcos-antonio",
+      "contributions": [
+        "code"
+      ]
+    }
+  ],
+  "contributorsPerLine": 7,
+  "projectName": "scrum-poker-online",
+  "projectOwner": "toworld-dev",
+  "repoType": "github",
+  "repoHost": "https://github.com",
+  "skipCi": true
+}
