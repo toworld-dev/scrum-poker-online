@@ -1,0 +1,24 @@
+{
+  "files": [
+    "README.md"
+  ],
+  "imageSize": 100,
+  "commit": false,
+  "contributors": [
+    {
+      "login": "henriqueweiand",
+      "name": "Henrique Weiand",
+      "avatar_url": "https://avatars1.githubusercontent.com/u/6539492?v=4",
+      "profile": "https://linkedin.com/in/henrique-weiand",
+      "contributions": [
+        "code"
+      ]
+    }
+  ],
+  "contributorsPerLine": 7,
+  "projectName": "scrum-poker-online",
+  "projectOwner": "toworld-dev",
+  "repoType": "github",
+  "repoHost": "https://github.com",
+  "skipCi": true
+}
