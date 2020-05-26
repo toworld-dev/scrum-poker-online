@@ -9,12 +9,15 @@ import { CreateTopicResponseDto } from './dto/response/createTopicResponse.dto';
 import { UpdateTopicResponseDto } from './dto/response/updateTopicResponse.dto';
 import { GetAllTopicDto } from './dto/request/getAllTopic.dto';
 import { Vote } from '../vote/vote.entity';
+import { MappedException } from 'nestjs-mapped-exception';
+import { TopicException } from './topic.exception';
 
 @Injectable()
 export class TopicService {
   constructor(
     @InjectRepository(Topic)
     private readonly repository: Repository<Topic>,
+    private readonly exception: MappedException<TopicException>,
   ) {}
 
   async getAll(
@@ -38,7 +41,9 @@ export class TopicService {
   async getOne(id: string): Promise<Topic> {
     try {
       return await this.repository.findOneOrFail(id);
-    } catch (err) {}
+    } catch (err) {
+      this.exception.ERRORS.NOT_FOUND.throw();
+    }
   }
 
   async create(
@@ -61,7 +66,7 @@ export class TopicService {
     const entity = await this.repository.findOne({ where: { id } });
 
     if (!entity) {
-      // throw new NotFoundException();
+      this.exception.ERRORS.NOT_FOUND.throw();
     }
 
     try {
@@ -69,7 +74,7 @@ export class TopicService {
 
       return await this.repository.save(entityUpdate);
     } catch (err) {
-      // throw new BadRequestException(err);
+      this.exception.ERRORS.SAVE_ERROR.throw();
     }
   }
 
@@ -77,13 +82,13 @@ export class TopicService {
     const entity = await this.repository.findOne({ where: { id } });
 
     if (!entity) {
-      // throw new NotFoundException();
+      this.exception.ERRORS.NOT_FOUND.throw();
     }
 
     try {
       await this.repository.delete(entity);
     } catch (err) {
-      // throw new BadRequestException(err);
+      this.exception.ERRORS.DELETE_ERROR.throw();
     }
   }
 

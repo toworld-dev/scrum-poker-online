@@ -9,9 +9,16 @@ import { AuthModule } from '../auth/auth.module';
 import { AuthService } from '../auth/auth.service';
 import { TopicModule } from '../topic/topic.module';
 import { Topic } from '../topic/topic.entity';
+import { MappedExceptionModule } from 'nestjs-mapped-exception';
+import { VoteException } from './vote.exception';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Vote, Topic]), AuthModule, TopicModule],
+  imports: [
+    MappedExceptionModule.forFeature(VoteException),
+    TypeOrmModule.forFeature([Vote, Topic]),
+    AuthModule,
+    TopicModule,
+  ],
   providers: [VoteService, AuthService, VoteGateway],
   controllers: [VoteController],
 })

@@ -8,12 +8,15 @@ import { UpdateVoteDto } from './dto/request/updateVote.dto';
 import { CreateVoteResponseDto } from './dto/response/createVoteResponse.dto';
 import { UpdateVoteResponseDto } from './dto/response/updateVoteResponse.dto';
 import { GetAllVoteDto } from './dto/request/getAllVote.dto';
+import { VoteException } from './vote.exception';
+import { MappedException } from 'nestjs-mapped-exception';
 
 @Injectable()
 export class VoteService {
   constructor(
     @InjectRepository(Vote)
     private readonly repository: Repository<Vote>,
+    private readonly exception: MappedException<VoteException>,
   ) {}
 
   async getAll(
@@ -35,7 +38,9 @@ export class VoteService {
   async getOne(id: string): Promise<Vote> {
     try {
       return await this.repository.findOneOrFail(id);
-    } catch (err) {}
+    } catch (err) {
+      this.exception.ERRORS.NOT_FOUND.throw();
+    }
   }
 
   async create(voteCreateDto: CreateVoteDto): Promise<CreateVoteResponseDto> {
@@ -58,7 +63,7 @@ export class VoteService {
     const entity = await this.repository.findOne({ where: { id } });
 
     if (!entity) {
-      // throw new NotFoundException();
+      this.exception.ERRORS.NOT_FOUND.throw();
     }
 
     try {
@@ -66,7 +71,7 @@ export class VoteService {
 
       return await this.repository.save(entityUpdate);
     } catch (err) {
-      // throw new BadRequestException(err);
+      this.exception.ERRORS.SAVE_ERROR.throw();
     }
   }
 
@@ -74,13 +79,13 @@ export class VoteService {
     const entity = await this.repository.findOne({ where: { id } });
 
     if (!entity) {
-      // throw new NotFoundException();
+      this.exception.ERRORS.NOT_FOUND.throw();
     }
 
     try {
       await this.repository.delete(entity);
     } catch (err) {
-      // throw new BadRequestException(err);
+      this.exception.ERRORS.DELETE_ERROR.throw();
     }
   }
 
