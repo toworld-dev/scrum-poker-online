@@ -9,9 +9,15 @@ import { RoomGateway } from './room.gateway';
 import { AuthService } from '../auth/auth.service';
 import { TopicService } from '../topic/topic.service';
 import { Topic } from '../topic/topic.entity';
+import { MappedExceptionModule } from 'nestjs-mapped-exception';
+import { RoomException } from './room.exception';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Room, Topic]), AuthModule],
+  imports: [
+    MappedExceptionModule.forFeature(RoomException),
+    TypeOrmModule.forFeature([Room, Topic]),
+    AuthModule,
+  ],
   providers: [RoomService, AuthService, TopicService, RoomGateway],
   controllers: [RoomController],
 })

@@ -13,6 +13,8 @@ import { UpdateRoomDto } from './dto/request/updateRoom.dto';
 import { EnterRoomDto } from './dto/request/enterRoom.dto';
 import { GetAllRoomDto } from './dto/request/getAllRoom.dto';
 import { RoomResponseDto } from './dto/response/roomResponse.dto';
+import { MappedException } from 'nestjs-mapped-exception';
+import { RoomException } from './room.exception';
 
 @Injectable()
 export class RoomService {
@@ -20,6 +22,7 @@ export class RoomService {
     @InjectRepository(Room)
     private readonly repository: Repository<Room>,
     private readonly authService: AuthService,
+    private readonly exception: MappedException<RoomException>,
   ) {}
 
   async getAll(
@@ -42,7 +45,7 @@ export class RoomService {
     try {
       return await this.repository.findOneOrFail(id);
     } catch (err) {
-      // throw new NotFoundException(err);
+      this.exception.ERRORS.NOT_FOUND.throw();
     }
   }
 
@@ -61,15 +64,14 @@ export class RoomService {
     const entity = await this.repository.findOne({ where: { id } });
 
     if (!entity) {
-      // throw new NotFoundException();
+      this.exception.ERRORS.NOT_FOUND.throw();
     }
 
     try {
       const entityUpdate = this.repository.merge(entity, roomDTO);
-
       return await this.repository.save(entityUpdate);
     } catch (err) {
-      // throw new BadRequestException(err);
+      this.exception.ERRORS.SAVE_ERROR.throw();
     }
   }
 
@@ -77,13 +79,13 @@ export class RoomService {
     const entity = await this.repository.findOne({ where: { id } });
 
     if (!entity) {
-      // throw new NotFoundException();
+      this.exception.ERRORS.NOT_FOUND.throw();
     }
 
     try {
       await this.repository.delete(entity);
     } catch (err) {
-      // throw new BadRequestException(err);
+      this.exception.ERRORS.DELETE_ERROR.throw();
     }
   }
 
@@ -98,7 +100,7 @@ export class RoomService {
     const clientId = uuidv4();
 
     if (entity.password !== password) {
-      // throw new BadRequestException();
+      this.exception.ERRORS.INVALID_ROOM_CREDENTIALS.throw();
     }
 
     return {

@@ -1,7 +1,7 @@
 import { MappedExceptionItem } from 'nestjs-mapped-exception';
 import { HttpStatus } from '@nestjs/common';
 
-export class TopicException {
+export class VoteException {
   NOT_FOUND: MappedExceptionItem = {
     message: 'Topic not found',
     code: 1,

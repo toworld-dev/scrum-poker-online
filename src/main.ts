@@ -7,6 +7,7 @@ import {
   NestFastifyApplication,
 } from '@nestjs/platform-fastify';
 import { CommonExceptionFilter } from './modules/common/commonExceptionFilter';
+import * as Sentry from '@sentry/node';
 
 async function bootstrap() {
   const app = await NestFactory.create<NestFastifyApplication>(
@@ -31,6 +32,11 @@ async function bootstrap() {
   const document = SwaggerModule.createDocument(app, options);
   const port = +process.env.PORT || 3000;
   SwaggerModule.setup('api', app, document);
+
+  Sentry.init({
+    dsn:
+      'https://b12188c659b74fba80e86c6ef9dd6f1f@o398052.ingest.sentry.io/5253193',
+  });
 
   await app.listen(port, '0.0.0.0');
   logger.log(`Application listening on port: ${port}`);
