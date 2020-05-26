@@ -34,9 +34,7 @@ async function bootstrap() {
   SwaggerModule.setup('api', app, document);
 
   Sentry.init({
-    dsn:
-      process.env.SENTRY ||
-      'https://d5ca4a755fcd45179ee8da4cc1393c05@o186699.ingest.sentry.io/5252879',
+    dsn: process.env.SENTRY || '',
   });
 
   await app.listen(port, '0.0.0.0');
