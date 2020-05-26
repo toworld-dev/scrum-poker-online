@@ -1,4 +1,4 @@
-# Scrum Poker Online
+# Scrum Poker Realtime
 
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
 
