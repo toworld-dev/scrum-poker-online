@@ -1,4 +1,10 @@
-# Scrum Poker Realtime
+<p align="center">
+  <img src="https://raw.githubusercontent.com/toworld-dev/scrum-poker-online-frontend/master/assets/icon.png" height="150" width="175" alt="Unform" />
+</p>
+
+<h3 align="center">
+  Scrum Poker Realtime
+</h3>
 
 Site https://scrumpoker.toworld.dev/
 
