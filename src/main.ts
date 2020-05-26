@@ -20,7 +20,14 @@ async function bootstrap() {
   app.useGlobalFilters(new CommonExceptionFilter(httpAdapter));
 
   app.useGlobalPipes(new ValidationPipe());
-  app.enableCors();
+
+  app.enableCors(
+    process.env.NODE_ENV === 'production'
+      ? {
+          origin: [/toworld\.dev/],
+        }
+      : {},
+  );
 
   const options = new DocumentBuilder()
     .setTitle('NestJS Scrum Poker Online')
