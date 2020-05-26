@@ -12,9 +12,15 @@ const config: TypeOrmModuleOptions = {
   username: process.env.TYPEORM_USERNAME || 'postgres',
   password: process.env.TYPEORM_PASSWORD || 'password',
   database: process.env.TYPEORM_DATABASE || 'scrumpoker',
-  // synchronize: true,
-  synchronize: JSON.parse(process.env.TYPEORM_SYNCHRONIZE) || false,
-  migrationsRun: JSON.parse(process.env.TYPEORM_MIGRATIONS_RUN) || false,
+  synchronize: process.env.TYPEORM_SYNCHRONIZE
+    ? JSON.parse(process.env.TYPEORM_SYNCHRONIZE)
+    : false,
+  migrationsRun: process.env.TYPEORM_MIGRATIONS_RUN
+    ? JSON.parse(process.env.TYPEORM_MIGRATIONS_RUN)
+    : false,
+  logging: process.env.TYPEORM_LOGGING
+    ? JSON.parse(process.env.TYPEORM_LOGGING)
+    : false,
   entities: [`${__dirname}/**/**/*.entity{.ts,.js}`],
   migrations: [`${__dirname}/migrations/*{.ts,.js}`],
   keepConnectionAlive: false,
