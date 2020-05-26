@@ -1,0 +1,42 @@
+{
+  "files": [
+    "README.md"
+  ],
+  "imageSize": 100,
+  "commit": false,
+  "contributors": [
+    {
+      "login": "henriqueweiand",
+      "name": "Henrique Weiand",
+      "avatar_url": "https://avatars1.githubusercontent.com/u/6539492?v=4",
+      "profile": "https://linkedin.com/in/henrique-weiand",
+      "contributions": [
+        "code"
+      ]
+    },
+    {
+      "login": "marcos-antonio",
+      "name": "Júnior",
+      "avatar_url": "https://avatars0.githubusercontent.com/u/20249442?v=4",
+      "profile": "https://github.com/marcos-antonio",
+      "contributions": [
+        "code"
+      ]
+    },
+    {
+      "login": "jhowr",
+      "name": "Jhow Rodrigues",
+      "avatar_url": "https://avatars3.githubusercontent.com/u/1730922?v=4",
+      "profile": "http://www.pingadoweb.com.br",
+      "contributions": [
+        "code"
+      ]
+    }
+  ],
+  "contributorsPerLine": 7,
+  "projectName": "scrum-poker-online",
+  "projectOwner": "toworld-dev",
+  "repoType": "github",
+  "repoHost": "https://github.com",
+  "skipCi": true
+}
