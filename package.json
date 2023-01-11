@@ -45,7 +45,7 @@
     "bufferutil": "^4.0.1",
     "canvas": "^2.6.1",
     "class-transformer": "^0.2.3",
-    "class-validator": "^0.12.2",
+    "class-validator": "^0.14.0",
     "dotenv": "^8.2.0",
     "fastify-swagger": "^2.5.1",
     "jsonwebtoken": "^8.5.1",
